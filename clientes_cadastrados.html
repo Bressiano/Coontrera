@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cadastrarcli.css">
+    <title>Clientes Cadastrados</title>
+    <script>
+       function mostrarClientes() {
+    const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+    const lista = document.getElementById('lista-clientes');
+    lista.innerHTML = ''; // Limpa a lista antes de adicionar novos clientes
+
+    const nomesCadastrados = new Set(); // Para evitar duplicatas
+
+    if (clientes.length === 0) {
+        const item = document.createElement('li');
+        item.textContent = "Nenhum cliente cadastrado.";
+        lista.appendChild(item);
+        return; // Sai da função se não houver clientes
+    }
+
+    clientes.forEach((cliente, index) => {
+        const nomeCompleto = `${cliente.nome} ${cliente.sobrenome}`;
+        
+        // Verifica se o cliente já foi adicionado à lista
+        if (!nomesCadastrados.has(nomeCompleto)) {
+            nomesCadastrados.add(nomeCompleto); // Adiciona o nome ao conjunto
+
+            const item = document.createElement('li');
+            item.className = 'cliente-item';
+            item.innerHTML = `
+                <strong>${cliente.nome} ${cliente.sobrenome}</strong><br>
+                Telefone: <span>${cliente.telefone}</span><br>
+                Email: <span>${cliente.email}</span><br>
+                CPF: <span>${cliente.cpf}</span><br>
+                Patologia: <span>${cliente.patologia.join(', ') || 'Nenhuma'}</span><br>
+                Descrição: <span>${cliente.descricao}</span><br>
+                <button onclick="editarCliente(${index})">Editar</button>
+                <button onclick="excluirCliente(${index})">Excluir</button>
+            `;
+            lista.appendChild(item);
+        }
+    });
+}
+
+function editarCliente(index) {
+    const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+    const cliente = clientes[index];
+
+    const nome = prompt("Nome:", cliente.nome);
+    const sobrenome = prompt("Sobrenome:", cliente.sobrenome);
+    const telefone = prompt("Telefone:", cliente.telefone);
+    const email = prompt("Email:", cliente.email);
+    const cpf = prompt("CPF:", cliente.cpf);
+    const patologia = prompt("Patologia (separadas por vírgula):", cliente.patologia.join(', '));
+    const descricao = prompt("Descrição:", cliente.descricao);
+
+    if (nome && sobrenome && telefone && email && cpf) {
+        clientes[index] = {
+            nome,
+            sobrenome,
+            telefone,
+            email,
+            cpf,
+            patologia: patologia.split(',').map(p => p.trim()),
+            descricao
+        };
+        localStorage.setItem('clientes', JSON.stringify(clientes));
+        mostrarClientes(); // Atualiza a lista
+    }
+}
+
+function excluirCliente(index) {
+    const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+    clientes.splice(index, 1); // Remove o cliente do array
+    localStorage.setItem('clientes', JSON.stringify(clientes));
+    mostrarClientes(); // Atualiza a lista
+}
+
+// Chama a função ao carregar a página
+window.onload = mostrarClientes;
+
+    </script>
+</head>
+<body>
+    <header>
+        <a href="inicio.html"><img src="img/iconsemfundo.png" alt="logo Coontrera"></a>
+        <nav class="ajuste">
+            <a href="inicio.html">Inicio</a>
+            <a href="paga.html">Pagamentos</a>
+            <a href="telacadastrar.html">Cadastrar clientes</a>
+            <a href="clientes_cadastrados.html">Clientes cadastrados</a>
+        </nav>
+        <a href="configuracoes.html"><img class="imgp" src="img/iconperfil.png" alt="icon perfil"></a>
+    </header>
+
+    <section class="tela">
+        <h1>Clientes Cadastrados</h1>
+        <ul id="lista-clientes"></ul> <!-- Lista de clientes -->
+    </section>
+</body>
+</html>

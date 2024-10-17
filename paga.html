@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Pagamentos</title>
+    <link rel="stylesheet" href="css/paga.css">
+</head>
+<body>
+    <header>
+        <a href="inicio.html"><img src="img/iconsemfundo.png" alt="logo Coontrera"></a>
+
+        <nav class="ajuste">
+            <a href="inicio.html">Inicio</a>
+            <a href="paga.html">Pagamentos</a>
+            <a href="telacadastrar.html">Cadastrar clientes</a>
+            <a href="clientes_cadastrados.html">Clientes cadastrados</a>
+        </nav>
+
+        <a href="configuracoes.html"><img class="imgp" src="img/iconperfil.png" alt="icon perfil"></a>
+    </header>
+    <section>
+        <div class="container">
+            <h1>Histórico de Pagamentos</h1>
+
+            <div>
+                <h2>Adicionar Cliente</h2>
+                <form id="adicionarCliente">
+                    <input type="text" id="descricao" placeholder="Nome do Cliente" required>
+                    <input type="text" id="valor" placeholder="Valor (R$)" required>
+                    <input type="date" id="data" required>
+                    <select id="status">
+                        <option value="Pago">Pago</option>
+                        <option value="Pendente">Devedor</option>
+                    </select>
+                    <button type="submit">Adicionar Cliente</button>
+                </form>
+            </div>
+
+            <table id="pagamentos">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Inicialmente vazio, novos clientes serão adicionados aqui -->
+                </tbody>
+            </table>
+            
+            <h2>Clientes que já pagaram:</h2>
+            <table id="clientesPagos">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Clientes que pagaram serão inseridos aqui -->
+                </tbody>
+            </table>
+            
+            <h2>Clientes devendo:</h2>
+            <table id="clientesDevendo">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Clientes devendo serão inseridos aqui -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const pagamentosTable = document.querySelector("#pagamentos tbody");
+            const clientesPagosTable = document.querySelector("#clientesPagos tbody");
+            const clientesDevendoTable = document.querySelector("#clientesDevendo tbody");
+            const form = document.querySelector("#adicionarCliente");
+
+            // Carrega os dados do localStorage
+            function carregarDados() {
+                const dados = JSON.parse(localStorage.getItem('pagamentos')) || [];
+                dados.forEach(({ descricao, valor, data, status }) => {
+                    adicionarNaTabela(descricao, valor, data, status);
+                });
+            }
+
+            // Adiciona um cliente na tabela
+            function adicionarNaTabela(descricao, valor, data, status) {
+                // Adiciona na tabela de pagamentos
+                const newRow = pagamentosTable.insertRow();
+                newRow.insertCell(0).textContent = new Date(data).toLocaleDateString("pt-BR");
+                newRow.insertCell(1).textContent = descricao;
+                newRow.insertCell(2).textContent = valor;
+                newRow.insertCell(3).textContent = status;
+
+                // Adiciona ações
+                const actionsCell = newRow.insertCell(4);
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Apagar";
+                deleteButton.onclick = () => {
+                    pagamentosTable.deleteRow(newRow.rowIndex - 1);
+                    salvarDados();
+                };
+                actionsCell.appendChild(deleteButton);
+
+                // Adiciona na tabela correspondente
+                if (status === "Pago") {
+                    const newPagoRow = clientesPagosTable.insertRow();
+                    newPagoRow.insertCell(0).textContent = descricao;
+                    newPagoRow.insertCell(1).textContent = valor;
+
+                    const pagoActionsCell = newPagoRow.insertCell(2);
+                    const deletePagoButton = document.createElement("button");
+                    deletePagoButton.textContent = "Apagar";
+                    deletePagoButton.onclick = () => {
+                        clientesPagosTable.deleteRow(newPagoRow.rowIndex - 1);
+                        salvarDados();
+                    };
+                    pagoActionsCell.appendChild(deletePagoButton);
+
+                    const markAsDebtorButton = document.createElement("button");
+                    markAsDebtorButton.textContent = "Marcar como Devendo";
+                    markAsDebtorButton.onclick = () => {
+                        const descricaoTemp = descricao;
+                        const valorTemp = valor;
+                        const dataTemp = data;
+                        // Remove o cliente da tabela de pagos
+                        clientesPagosTable.deleteRow(newPagoRow.rowIndex - 1);
+                        // Adiciona na tabela de devendo
+                        adicionarNaTabela(descricaoTemp, valorTemp, dataTemp, "Pendente");
+                        salvarDados();
+                    };
+                    pagoActionsCell.appendChild(markAsDebtorButton);
+
+                } else {
+                    const newDevedorRow = clientesDevendoTable.insertRow();
+                    newDevedorRow.insertCell(0).textContent = descricao;
+                    newDevedorRow.insertCell(1).textContent = valor;
+
+                    const devedorActionsCell = newDevedorRow.insertCell(2);
+                    const deleteDevedorButton = document.createElement("button");
+                    deleteDevedorButton.textContent = "Apagar";
+                    deleteDevedorButton.onclick = () => {
+                        clientesDevendoTable.deleteRow(newDevedorRow.rowIndex - 1);
+                        salvarDados();
+                    };
+                    devedorActionsCell.appendChild(deleteDevedorButton);
+
+                    const payButton = document.createElement("button");
+                    payButton.textContent = "Marcar como Pago";
+                    payButton.onclick = () => {
+                        const descricaoTemp = descricao;
+                        const valorTemp = valor;
+                        const dataTemp = data;
+                        // Remove o cliente da tabela de devendo
+                        clientesDevendoTable.deleteRow(newDevedorRow.rowIndex - 1);
+                        // Adiciona na tabela de pagos
+                        adicionarNaTabela(descricaoTemp, valorTemp, dataTemp, "Pago");
+                        salvarDados();
+                    };
+                    devedorActionsCell.appendChild(payButton);
+                }
+            }
+
+            // Salva os dados no localStorage
+            function salvarDados() {
+                const dados = [];
+                const rows = pagamentosTable.querySelectorAll("tr");
+                rows.forEach(row => {
+                    const cells = row.cells;
+                    if (cells.length > 0) {
+                        dados.push({
+                            data: cells[0].textContent,
+                            descricao: cells[1].textContent,
+                            valor: cells[2].textContent,
+                            status: cells[3].textContent
+                        });
+                    }
+                });
+                localStorage.setItem('pagamentos', JSON.stringify(dados));
+            }
+
+            // Carrega os dados ao iniciar
+            carregarDados();
+
+            // Função para adicionar um cliente
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const descricao = document.getElementById("descricao").value;
+                let valor = document.getElementById("valor").value;
+                const data = document.getElementById("data").value;
+                const status = document.getElementById("status").value;
+
+                // Adiciona vírgula se não estiver presente
+                if (!valor.includes(',')) {
+                    valor += ',00';
+                }
+
+                // Adiciona na tabela
+                adicionarNaTabela(descricao, valor, data, status);
+
+                // Salva os dados no localStorage
+                salvarDados();
+
+                // Limpa os campos do formulário
+                form.reset();
+            });
+        });
+    </script>
+</body>
+</html>

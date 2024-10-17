@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cadastrar.css">
+    <title>Coontrera</title>
+    <script>
+        function cadastrarCliente(event) {
+            event.preventDefault(); // Impede o envio do formulário
+
+            const nome = document.querySelector('input[name="nome"]').value;
+            const sobrenome = document.querySelector('input[name="sobrenome"]').value;
+            const telefone = document.querySelector('input[name="telefone"]').value;
+            const email = document.querySelector('input[name="email"]').value;
+            const cpf = document.querySelector('input[name="cpf"]').value;
+            const patologia = [];
+            document.querySelectorAll('.checkbox-group input:checked').forEach(checkbox => {
+                patologia.push(checkbox.nextElementSibling.textContent);
+            });
+            const descricao = document.querySelector('textarea[name="desc"]').value;
+
+            const cliente = {
+                nome,
+                sobrenome,
+                telefone,
+                email,
+                cpf,
+                patologia,
+                descricao
+            };
+
+            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            clientes.push(cliente);
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+
+            window.location.href = 'clicadastrados.html'; // Redireciona para a tela clicadastrados.html
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <a href="inicio.html"><img src="img/iconsemfundo.png" alt="logo Coontrera"></a>
+        <nav class="ajuste">
+            <a href="inicio.html">Inicio</a>
+            <a href="paga.html">Pagamentos</a>
+            <a href="telacadastrar.html">Cadastrar clientes</a>
+            <a href="telalogin.html">Clientes cadastrados</a>
+        </nav>
+        <a href="configuracoes.html"><img class="imgp" src="img/iconperfil.png" alt="icon perfil"></a>
+    </header>
+
+    <section class="tela">
+        <h1>Cadastrar um novo cliente</h1>
+    </section>
+
+    <form method="POST" onsubmit="cadastrarCliente(event)">
+        <label for="Nome">Nome: </label>
+        <input type="text" name="nome" placeholder="coloque seu nome" required>
+
+        <label for="Sobrenome">Sobrenome: </label>
+        <input type="text" name="sobrenome" placeholder="coloque seu sobrenome" required>
+
+        <label for="telefone">Telefone</label>
+        <input type="tel" name="telefone" placeholder="coloque seu telefone" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="coloque seu email" required>
+
+        <label for="cpf">CPF</label>
+        <input type="text" name="cpf" placeholder="coloque seu cpf" required>
+
+        <label for="patologia">Patologia</label>
+        <div class="checkbox-group">
+            <input type="checkbox" id="escoliose">
+            <label for="escoliose">Escoliose</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="artrose">
+            <label for="artrose">Artrose</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="osteoporose">
+            <label for="osteoporose">Osteoporose</label>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="outro">
+            <label for="outro">Outro</label>
+        </div>
+
+        <label for="desc">Descrição</label>
+        <textarea id="descricao" name="desc" placeholder="coloque a descrição" required></textarea>
+
+        <button type="submit" class="btnenv">Confirmar</button>
+    </form>
+</body>
+</html>

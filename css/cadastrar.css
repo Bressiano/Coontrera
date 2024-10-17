@@ -1,0 +1,166 @@
+:root{
+    --roxoheaderhover: rgb(214, 0, 196);
+    --roxoinicio: rgb(220, 99, 247);
+    --roxoform: rgb(176, 89, 196);
+    --roxoafter: rgb(80, 32, 91);
+    --roxobtnhover: rgb(61, 1, 65);
+    --roxobtn: rgb(157, 82, 167);
+    --verdeclaro: rgb(141, 250, 138);
+    --verde: rgb(86, 230, 81);
+    --verdeescuro: rgb(50, 172, 45);
+    --azulinicio: rgb(79, 243, 255);
+    --azulbtn: rgb(0, 174, 255);
+    --azulbtnletra: rgb(0, 85, 124);
+    --azulbtnhover: rgb(0, 131, 192);
+    --branco: rgb(255, 255, 255);
+    --cinzaclaro: rgb(226, 226, 226);
+    --cinzaescuro: rgb(185, 185, 185);
+    --cinza: rgb(129, 129, 129);
+    --preto: rgb(0, 0, 0);
+}
+
+body {
+    margin: 0; /* Remove margens padrão */
+}
+
+header {
+    background: linear-gradient(180deg, var(--roxoinicio) 10%, var(--azulinicio) 100%);
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+    padding: 0;
+}
+
+header img {
+    width: 9rem;
+}
+
+header .imgp {
+    width: 3rem;
+}
+
+h1 {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.5rem;
+    background: linear-gradient(180deg, var(--azulinicio) 10%, var(--roxoform) 100%);
+    padding: 10px;
+    position: relative;
+    top: 0;
+    border: 1px solid white;
+    border-radius: 9rem;
+}
+
+nav a {
+    text-decoration: none;
+    padding: 1rem;
+    color: black;
+    font-size: 1.2rem;
+}
+
+a:hover {
+    text-decoration: dotted;
+    color: var(--roxoheaderhover);
+    transition: all 0.3s;
+}
+
+.tela {
+    align-items: center;
+    display: flex;
+    text-align: center;
+    margin: 0.5rem;
+    border: 1px solid white;
+    border-radius: 9rem;
+}
+
+form {
+    margin: 1rem;
+}
+
+label {
+    display: block;
+    margin: 1rem 0 0.2rem 0;
+}
+
+/* ajuste dos input e textarea individualmente */
+input[type="text"]{
+    width: 55rem;
+}
+
+input[type="tel"] {
+    width: 55rem;
+}
+
+input[type="email"] {
+    width: 55rem;
+    
+}
+
+textarea#descricao{
+    width: 55rem;
+    height: 5rem;
+}
+
+/* */
+
+input, select, textarea {
+    padding: 0.6rem;
+    border: 1px solid black;
+    background-color: var(--cinzaclaro);
+    border-radius: 5px;
+    color: var(--preto);
+    outline: none;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+input, textarea{
+    cursor: text;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin: 0; /* Remove o espaçamento entre os itens */
+}
+
+.checkbox-group input{
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    margin-right: 0.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-group {
+    flex-direction: row; /* Garantir que o input e o label fiquem lado a lado */
+    margin-bottom: 0.2rem; /* Pequeno espaçamento entre as opções */
+}
+
+.btnenv{
+    margin-top: 1rem;
+    width: 9rem;
+    background-color: var(--azulbtn);
+    color: var(--azulbtnletra);
+    border: 1px solid var(--azulbtn);
+    padding: 0.7rem;
+    border-radius: 25rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btnenv:hover{
+    background-color: var(--azulbtnhover);
+    transition: 0.5s all;
+}
+
+.ajuste:hover{
+    color: var(--roxoheaderhover);
+}

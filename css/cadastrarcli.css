@@ -1,0 +1,114 @@
+:root{
+    --roxoheaderhover: rgb(214, 0, 196);
+    --roxoinicio: rgb(220, 99, 247);
+    --roxoform: rgb(176, 89, 196);
+    --roxoafter: rgb(80, 32, 91);
+    --roxobtnhover: rgb(61, 1, 65);
+    --roxobtn: rgb(157, 82, 167);
+    --verdeclaro: rgb(141, 250, 138);
+    --verde: rgb(86, 230, 81);
+    --verdeescuro: rgb(50, 172, 45);
+    --azulinicio: rgb(79, 243, 255);
+    --azulbtn: rgb(0, 174, 255);
+    --azulbtnletra: rgb(0, 85, 124);
+    --azulbtnhover: rgb(0, 131, 192);
+    --branco: rgb(255, 255, 255);
+    --cinzaclaro: rgb(226, 226, 226);
+    --cinzaescuro: rgb(185, 185, 185);
+    --cinza: rgb(129, 129, 129);
+    --preto: rgb(0, 0, 0);
+}
+
+body {
+    margin: 0; /* Remove margens padrão */
+}
+
+header {
+    background: linear-gradient(180deg, var(--roxoinicio) 10%, var(--azulinicio) 100%);
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+    padding: 0;
+}
+
+header img {
+    width: 9rem;
+}
+
+header .imgp {
+    width: 3rem;
+}
+
+h1 {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.5rem;
+    background: linear-gradient(180deg, var(--azulinicio) 10%, var(--roxoform) 100%);
+    padding: 10px;
+    position: relative;
+    top: 0;
+    border: 1px solid white;
+    border-radius: 9rem;
+}
+
+nav a {
+    text-decoration: none;
+    padding: 1rem;
+    color: black;
+    font-size: 1.2rem;
+}
+
+a:hover {
+    text-decoration: dotted;
+    color: var(--roxoheaderhover);
+    transition: all 0.3s;
+}
+/* Estilos específicos para centralizar o título */
+.tela {
+    text-align: center; /* Centraliza o texto */
+    margin: 20px; /* Espaçamento em volta da seção */
+}
+#lista-clientes {
+    list-style-type: none; /* Remove marcadores padrão da lista */
+    padding: 0;
+    display: flex; /* Alinha os itens em linha */
+    flex-wrap: wrap; /* Permite que os itens quebrem para a linha seguinte */
+    justify-content: center; /* Centraliza os itens na linha */
+}
+
+.cliente-item {
+    background-color: var(--cinzaclaro);
+    border: 1px solid var(--preto);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px; /* Margem em todos os lados */
+    transition: transform 0.3s;
+    width: 200px; /* Define uma largura fixa para os itens */
+    text-align: left; /* Alinha o texto à esquerda dentro do item */
+}
+
+.cliente-item:hover {
+    transform: scale(1.02); /* Efeito de zoom ao passar o mouse */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cliente-item span {
+    color: var(--preto);
+}
+.cliente-item button {
+    margin-top: 10px;
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--azulbtn);
+    color: var(--azulbtnletra);
+    cursor: pointer;
+}
+
+.cliente-item button:hover {
+    background-color: var(--azulbtnhover);
+}
+
